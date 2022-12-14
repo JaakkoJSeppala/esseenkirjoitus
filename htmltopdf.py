@@ -1,3 +1,4 @@
+import signal
 import pdfkit
 import sys
 import fileinput
@@ -29,5 +30,5 @@ with open('koe.html') as infile, open('uusi.html', 'w') as outfile:
         outfile.write(line)
 
 command = f'wkhtmltopdf -L {leftmargin} -R {rightmargin} -T {topmargin} -B {bottommargin} uusi.html ./test.pdf'
-pro = subprocess.Popen(command,shell=True, preexec_fn=os.setsid)
+pro = subprocess.Popen(command,stdout=subprocess.PIPE,shell=True, preexec_fn=os.setsid)
 os.killpg(os.getpgid(pro.pid), signal.SIGTERM)  
