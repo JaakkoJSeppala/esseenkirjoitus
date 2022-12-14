@@ -6,6 +6,11 @@ from pdf2image import convert_from_path
 from PIL import Image
 import subprocess
 
+leftmargin= '30mm'
+rightmargin = '30mm'
+topmargin = '25mm'
+bottommargin = '25mm'
+
 kurssikoodi = 'KTKP010'
 kurssinimi = 'Oppiminen ja ohjaus'
 
@@ -23,5 +28,6 @@ with open('koe.html') as infile, open('uusi.html', 'w') as outfile:
             line = line.replace(src, target)
         outfile.write(line)
 
-command = 'wkhtmltopdf -L 30mm -R 30mm -T 25mm -B 25mm uusi.html ./test.pdf'
-subprocess.Popen(command,shell=True)
+command = f'wkhtmltopdf -L {leftmargin} -R {rightmargin} -T {topmargin} -B {bottommargin} uusi.html ./test.pdf'
+pro = subprocess.Popen(command,shell=True, preexec_fn=os.setsid)
+os.killpg(os.getpgid(pro.pid), signal.SIGTERM)  
